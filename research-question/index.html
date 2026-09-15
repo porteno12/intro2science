@@ -1,0 +1,756 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#2E7D52">
+  <title>שאלת חקר והתהליך המדעי — שאלון סיכום</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink:#16261D; --lab:#2E7D52; --lab-deep:#1F5B3A; --mist:#EDF5EE;
+      --flask:#E85D2A; --coral:#D93F4C; --muted:#5B7566;
+      --card:#FFFFFF; --line:#D3E4D7; --radius:18px; --radius-sm:12px;
+    }
+    * { box-sizing:border-box; }
+    body {
+      margin:0; min-height:100vh; color:var(--ink); font-family:Heebo,sans-serif;
+      background-color:#F6FBF7;
+      background-image:
+        radial-gradient(circle at 14% 10%, rgba(46,125,82,.10), transparent 24rem),
+        radial-gradient(circle at 88% 6%, rgba(232,93,42,.09), transparent 26rem);
+    }
+    button, input, select { font:inherit; }
+    .shell { width:min(760px, calc(100% - 32px)); margin:0 auto; padding:32px 0 56px; }
+    .brand { display:flex; align-items:center; gap:10px; color:var(--lab); font-weight:800; font-size:15px; letter-spacing:.02em; }
+    .brand .dot { width:11px; height:11px; border-radius:50%; background:var(--flask); box-shadow:0 0 0 4px rgba(232,93,42,.16); }
+    .panel {
+      position:relative; margin-top:24px; padding:clamp(24px,6vw,44px);
+      background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+      box-shadow:0 18px 44px rgba(31,91,58,.10); animation:enter .4s ease both;
+    }
+    h1, h2, p { margin-top:0; }
+    h1 { font-size:clamp(32px,7.4vw,52px); line-height:1.08; letter-spacing:-.02em; margin-bottom:14px; color:var(--lab-deep); font-weight:800; }
+    h2 { font-size:clamp(23px,5vw,32px); line-height:1.2; letter-spacing:-.01em; font-weight:800; }
+    p { line-height:1.75; }
+    .eyebrow { color:var(--flask); font-weight:800; font-size:14px; letter-spacing:.05em; margin-bottom:8px; }
+    .meta { color:var(--muted); font-weight:600; line-height:1.8; }
+    .cover-grid { display:grid; grid-template-columns:1.1fr .9fr; align-items:center; gap:26px; }
+    .cover-art { width:100%; max-width:250px; justify-self:center; }
+    @media (max-width:620px) { .cover-grid { grid-template-columns:1fr; } .cover-art { max-width:180px; grid-row:1; } }
+    .chip-row { display:flex; flex-wrap:wrap; gap:8px; margin:18px 0 4px; }
+    .chip { padding:6px 12px; border-radius:999px; background:var(--mist); border:1px solid var(--line); color:var(--lab-deep); font-weight:700; font-size:13px; }
+    .start, .next, .reset {
+      border:0; min-height:52px; padding:13px 30px; border-radius:999px; cursor:pointer;
+      color:#fff; background:var(--lab); font-weight:800; font-size:17px;
+      box-shadow:0 8px 20px rgba(46,125,82,.26); transition:transform .15s, box-shadow .15s, background .15s;
+    }
+    .start:hover:not(:disabled), .next:hover:not(:disabled), .reset:hover { transform:translateY(-2px); background:var(--lab-deep); box-shadow:0 12px 28px rgba(46,125,82,.34); }
+    .start:active:not(:disabled), .next:active:not(:disabled), .reset:active { transform:translateY(0); }
+    .start:focus-visible, .next:focus-visible, .reset:focus-visible,
+    .nav-button:focus-visible, .choice:focus-visible, select:focus-visible, .check-match:focus-visible {
+      outline:3px solid var(--flask); outline-offset:3px;
+    }
+    .start:disabled { cursor:not-allowed; opacity:.42; box-shadow:none; transform:none; }
+    .hidden { display:none !important; }
+    .nowrap { white-space:nowrap; }
+    .progress-copy { display:flex; justify-content:space-between; gap:12px; font-weight:700; font-size:14px; color:var(--muted); }
+    .progress-copy #points { color:var(--flask); }
+    .track { height:10px; overflow:hidden; margin:10px 0 28px; border-radius:999px; background:var(--mist); border:1px solid var(--line); }
+    .fill { width:0; height:100%; border-radius:999px; background:linear-gradient(90deg, var(--flask), #F2874F); transition:width .45s cubic-bezier(.4,0,.2,1); }
+    .question { animation:enter .35s ease both; }
+    .question-heading { display:flex; align-items:flex-start; gap:13px; margin-bottom:6px; }
+    .question-icon { flex:0 0 42px; display:grid; place-items:center; width:42px; height:42px; color:var(--lab); border-radius:50%; background:var(--mist); border:1px solid var(--line); }
+    .question-icon svg { width:23px; height:23px; }
+    .question p.q-text { font-size:clamp(19px,3.9vw,24px); font-weight:700; line-height:1.45; margin-bottom:20px; }
+    .scenario { margin:0 0 18px; padding:14px 17px; border-right:4px solid var(--flask); border-radius:0 var(--radius-sm) var(--radius-sm) 0; background:#FDF3EE; color:#5A3322; font-weight:600; line-height:1.7; }
+    .choices { display:grid; gap:11px; }
+    .choice {
+      position:relative; width:100%; padding:16px 18px; padding-left:48px; text-align:right;
+      color:var(--ink); background:#FCFEFC; border:2px solid var(--line); border-radius:var(--radius-sm);
+      cursor:pointer; font-weight:600; line-height:1.55; transition:border-color .16s, background .16s, transform .16s;
+    }
+    .choice:hover:not(:disabled) { border-color:var(--lab); background:var(--mist); transform:translateX(-3px); }
+    .choice:disabled { cursor:default; }
+    .choice.correct { border-color:var(--lab); background:rgba(46,125,82,.11); animation:pop .32s ease; }
+    .choice.wrong { border-color:var(--coral); background:rgba(217,63,76,.10); animation:shake .36s; }
+    .choice.correct::after, .choice.wrong::after { position:absolute; left:17px; top:50%; transform:translateY(-50%); font-size:19px; font-weight:800; }
+    .choice.correct::after { content:"\2713"; color:var(--lab); }
+    .choice.wrong::after { content:"\2715"; color:var(--coral); }
+    .feedback {
+      margin-top:22px; padding:18px 20px; border-right:5px solid var(--lab);
+      border-radius:0 var(--radius-sm) var(--radius-sm) 0; background:var(--mist);
+      line-height:1.7; animation:enter .28s ease;
+    }
+    .feedback.bad { border-color:var(--coral); background:rgba(217,63,76,.07); }
+    .feedback strong { display:block; margin-bottom:6px; font-size:17px; color:var(--lab-deep); }
+    .feedback.bad strong { color:var(--coral); }
+    .feedback p { margin:0; }
+    .navigation { display:flex; justify-content:space-between; gap:12px; margin-top:26px; padding-top:22px; border-top:1px solid var(--line); }
+    .nav-button { min-height:46px; padding:10px 20px; color:var(--muted); background:transparent; border:1px solid var(--line); border-radius:999px; cursor:pointer; font-weight:700; transition:color .15s, border-color .15s, background .15s; }
+    .nav-button:hover:not(:disabled) { color:var(--lab-deep); border-color:var(--lab); background:var(--mist); }
+    .nav-button:disabled { opacity:.35; cursor:not-allowed; }
+    .match-list { display:grid; gap:11px; }
+    .match { display:grid; grid-template-columns:1fr auto; align-items:center; gap:12px; padding:14px 16px; background:#FCFEFC; border:2px solid var(--line); border-radius:var(--radius-sm); font-weight:600; line-height:1.5; }
+    @media (max-width:520px) { .match { grid-template-columns:1fr; } }
+    .match.correct { border-color:var(--lab); background:rgba(46,125,82,.09); }
+    .match.wrong { border-color:var(--coral); background:rgba(217,63,76,.08); }
+    select { padding:10px 12px; border:1px solid var(--line); border-radius:10px; color:var(--ink); background:#fff; cursor:pointer; font-weight:600; }
+    select:disabled { opacity:.85; }
+    .check-match { margin-top:18px; min-height:48px; padding:11px 26px; color:var(--lab); background:transparent; border:2px solid var(--lab); border-radius:999px; font-weight:800; cursor:pointer; transition:background .16s, color .16s, transform .15s; }
+    .check-match:hover:not(:disabled) { color:#fff; background:var(--lab); transform:translateY(-2px); }
+    .check-match:disabled { opacity:.45; cursor:not-allowed; }
+    .result { text-align:center; }
+    .flask-art { width:84px; height:84px; margin:0 auto 10px; display:block; }
+    .score {
+      margin:24px auto; display:grid; place-items:center; width:152px; height:152px;
+      border:9px solid var(--lab); border-radius:50%; background:var(--mist);
+      box-shadow:0 0 0 8px rgba(46,125,82,.10); font-size:44px; font-weight:800; color:var(--lab-deep);
+      animation:pop .5s ease;
+    }
+    .score.fail { border-color:var(--coral); color:var(--coral); background:rgba(217,63,76,.07); box-shadow:0 0 0 8px rgba(217,63,76,.10); }
+    .outcome { font-size:21px; font-weight:800; margin-bottom:6px; }
+    .submit-note {
+      margin:26px 0 8px; padding:18px 20px; text-align:right;
+      border:1px dashed var(--flask); border-radius:var(--radius-sm); background:#FDF3EE;
+      color:#5A3322; font-weight:700; line-height:1.8;
+    }
+    .review { text-align:right; margin-top:26px; padding-top:22px; border-top:1px solid var(--line); }
+    .review h3 { font-size:18px; margin:0 0 12px; color:var(--lab-deep); }
+    .review ol { margin:0; padding-inline-start:20px; color:var(--muted); line-height:1.8; font-weight:600; }
+    #confetti { position:fixed; inset:0; pointer-events:none; z-index:9; }
+    @keyframes enter { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
+    @keyframes pop { 0% { transform:scale(.94); } 55% { transform:scale(1.035); } 100% { transform:scale(1); } }
+    @keyframes shake { 0%,100% { transform:translateX(0); } 20% { transform:translateX(-7px); } 40% { transform:translateX(6px); } 60% { transform:translateX(-4px); } 80% { transform:translateX(3px); } }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; }
+      .choice:hover:not(:disabled) { transform:none; }
+      #confetti { display:none; }
+    }
+    @media print {
+      body { background:#fff; }
+      .panel { box-shadow:none; border-color:#999; }
+      .navigation, .reset, #confetti { display:none !important; }
+    }
+  </style>
+</head>
+<body>
+<canvas id="confetti" class="hidden"></canvas>
+<main class="shell">
+  <div class="brand"><span class="dot"></span><span>מבוא למדעים · שאלון סיכום</span></div>
+
+  <!-- COVER -->
+  <section class="panel" id="cover">
+    <div class="cover-grid">
+      <div>
+        <div class="eyebrow">מבוא למדעים — י׳</div>
+        <h1>שאלת חקר<br>והתהליך המדעי</h1>
+        <p class="meta" id="cover-meta"></p>
+        <div class="chip-row">
+          <span class="chip">20 שאלות</span>
+          <span class="chip">סף מעבר: 60</span>
+        </div>
+        <p class="meta" style="margin-top:18px">בשאלון תתבקשו לזהות שאלות חקר, משתנים, השערות ושיטות מחקר, ולהפעיל חשיבה ביקורתית. לאחר כל תשובה יוצג הסבר.</p>
+        <button class="start" id="start-btn" type="button">התחל</button>
+      </div>
+      <svg class="cover-art" viewBox="0 0 200 200" role="img" aria-label="איור מבחנה ועדשה מגדלת">
+        <circle cx="100" cy="100" r="92" fill="#EDF5EE"/>
+        <path d="M84 36h32v46l30 56a16 16 0 0 1-14 24H68a16 16 0 0 1-14-24l30-56z" fill="#fff" stroke="#2E7D52" stroke-width="5" stroke-linejoin="round"/>
+        <path d="M70 116h60l16 30a10 10 0 0 1-9 15H63a10 10 0 0 1-9-15z" fill="#E85D2A" opacity=".82"/>
+        <circle cx="88" cy="140" r="6" fill="#fff" opacity=".65"/>
+        <circle cx="112" cy="152" r="4.5" fill="#fff" opacity=".55"/>
+        <circle cx="104" cy="128" r="3.5" fill="#fff" opacity=".5"/>
+        <path d="M78 36h44" stroke="#2E7D52" stroke-width="7" stroke-linecap="round"/>
+        <circle cx="146" cy="58" r="21" fill="none" stroke="#1F5B3A" stroke-width="5"/>
+        <path d="M161 73l17 17" stroke="#1F5B3A" stroke-width="7" stroke-linecap="round"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section class="panel hidden" id="quiz">
+    <div class="progress-copy">
+      <span id="counter"></span>
+      <span id="points"></span>
+    </div>
+    <div class="track"><div class="fill" id="fill"></div></div>
+    <div id="question-host"></div>
+    <div class="navigation">
+      <button class="nav-button" id="prev-btn" type="button">הקודמת</button>
+      <button class="next" id="next-btn" type="button">הבאה</button>
+    </div>
+  </section>
+
+  <!-- RESULT -->
+  <section class="panel hidden" id="result">
+    <div class="result">
+      <svg class="flask-art" viewBox="0 0 100 100" role="img" aria-label="איור סיום">
+        <circle cx="50" cy="50" r="46" fill="#EDF5EE"/>
+        <path d="M42 22h16v24l15 28a8 8 0 0 1-7 12H34a8 8 0 0 1-7-12l15-28z" fill="#fff" stroke="#2E7D52" stroke-width="3.5" stroke-linejoin="round"/>
+        <path d="M35 60h30l8 14a5 5 0 0 1-4.5 7.5h-37A5 5 0 0 1 27 74z" fill="#E85D2A" opacity=".85"/>
+        <path d="M39 22h22" stroke="#2E7D52" stroke-width="4.5" stroke-linecap="round"/>
+      </svg>
+      <div class="eyebrow">סיום השאלון</div>
+      <h2 id="result-title"></h2>
+      <div class="score" id="score-ring"></div>
+      <p class="outcome" id="outcome"></p>
+      <p class="meta" id="result-detail"></p>
+
+      <div class="submit-note">
+        יש לצלם את דף הסיכום הזה ולהגישו במטלה ב<bdi class="nowrap">Google Classroom</bdi> — באותו מקום שבו פתחתם אותה.
+      </div>
+
+      <div class="review hidden" id="review">
+        <h3>שאלות שבהן טעיתם</h3>
+        <ol id="review-list"></ol>
+      </div>
+
+      <div style="margin-top:26px"><button class="reset" id="reset-btn" type="button">התחל מחדש</button></div>
+    </div>
+  </section>
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  var PASS = 60;
+
+  var QUESTIONS = [
+    {
+      type: "single",
+      q: "לפי המצגת, מהו מדע?",
+      options: [
+        "דרך לדעת המבוססת על תצפית ובדיקה שיטתית",
+        "אוסף עובדות מוכחות שאין עליהן עוררין",
+        "ידע המתקבל מסמכות מקצועית מוסמכת",
+        "הסקת מסקנות מניסיון אישי"
+      ],
+      correct: 0,
+      explain: "מדע אינו נשען על אמונה, על סמכות או על ניסיון אישי בלבד, אלא על תצפית ובדיקה שיטתית. זו בדיוק הסיבה שממנה נגזרת שאלת החקר: כדי לדעת משהו, צריך שתהיה דרך לבדוק אותו. גם ידע מדעי מבוסס נשאר פתוח לבדיקה מחודשת ולשיפור."
+    },
+    {
+      type: "single",
+      q: "מהו הרגע שבו מתחיל כל מחקר מדעי?",
+      options: [
+        "תצפית שמעוררת סקרנות",
+        "ניסוח השערה",
+        "תכנון הניסוי",
+        "איסוף נתונים"
+      ],
+      correct: 0,
+      explain: "המסלול הוא תצפית ← סקרנות ← שאלה: רואים תופעה מעניינת בעולם, שואלים עליה \"למה זה קורה?\", ורק אז מנסחים שאלה שניתן לחקור. השערה, תכנון ניסוי ואיסוף נתונים הם שלבים מאוחרים יותר, וכולם נגזרים מהשאלה שנוסחה."
+    },
+    {
+      type: "classify",
+      q: "סווגו כל שאלה לסוג הנכון.",
+      categories: ["שאלה של ידע", "שאלה פילוסופית/אתית", "שאלה מחקרית"],
+      items: [
+        { text: "כמה כוכבי לכת יש במערכת השמש?", cat: "שאלה של ידע" },
+        { text: "מהי משמעות החיים?", cat: "שאלה פילוסופית/אתית" },
+        { text: "כיצד משפיעה כמות האור על גובה צמח שעועית?", cat: "שאלה מחקרית" },
+        { text: "האם מותר לערוך ניסויים בבעלי חיים?", cat: "שאלה פילוסופית/אתית" },
+        { text: "מתי הומצא המיקרוסקופ?", cat: "שאלה של ידע" }
+      ],
+      explain: "שאלה של ידע נענית במקור מידע קיים ואינה דורשת חקירה. שאלה פילוסופית או אתית אינה ניתנת לבדיקה אמפירית כי היא מבוססת על ערכים. רק שאלה מחקרית ניתנת לבדיקה באמצעות תצפית או ניסוי, והיא זו שמייצרת ידע חדש."
+    },
+    {
+      type: "single",
+      q: "מהו המאפיין ההופך שאלה לשאלת חקר אמיתית?",
+      options: [
+        "היא ניתנת לבדיקה — אפשר לאסוף נתונים ולהגיע לתשובה המבוססת על ראיות",
+        "היא עוסקת בנושא מדעי מוכר",
+        "התשובה לה אינה ידועה לאיש",
+        "אפשר לענות עליה בעזרת חיפוש במקורות מידע"
+      ],
+      correct: 0,
+      explain: "המבחן המכריע הוא יכולת הבדיקה: חייבת להיות דרך לאסוף נתונים, לבצע ניסוי או תצפית, ולהגיע לתשובה הנשענת על ראיות. שאלה שאפשר לענות עליה בחיפוש בספר היא שאלה של ידע, ונושא מדעי כשלעצמו אינו הופך שאלה לניתנת לבדיקה."
+    },
+    {
+      type: "single",
+      q: "אילו מבין אלה הם חמשת מאפייניה של שאלת חקר טובה לפי המצגת?",
+      options: [
+        "ממוקדת, ניתנת לבדיקה, ניתנת למדידה, בת-ביצוע, אתית",
+        "ממוקדת, מקורית, ניתנת למדידה, זולה, אתית",
+        "רחבה, ניתנת לבדיקה, ניתנת למדידה, בת-ביצוע, מקורית",
+        "ממוקדת, ניתנת לבדיקה, מהירה, בת-ביצוע, מוסכמת"
+      ],
+      correct: 0,
+      explain: "שאלת חקר טובה היא ממוקדת (ספציפית ולא כללית מדי), ניתנת לבדיקה בניסוי או בתצפית, ניתנת למדידה כמותית או איכותית, בת-ביצוע מבחינת זמן, ציוד ובטיחות, ואתית. שאלה רחבה מדי אינה מאפשרת בדיקה ממוקדת, ומקוריות או עלות אינן מהמאפיינים שנלמדו."
+    },
+    {
+      type: "single",
+      q: "בניסוי הבודק כיצד משפיעה כמות האור על גובה צמח — מהו המשתנה הבלתי-תלוי?",
+      options: [
+        "כמות האור",
+        "גובה הצמח",
+        "סוג האדמה",
+        "כמות המים"
+      ],
+      correct: 0,
+      explain: "המשתנה הבלתי-תלוי הוא הגורם שאותו משנים בכוונה — הסיבה הנבדקת, כאן כמות האור. גובה הצמח הוא המשתנה התלוי, כלומר התוצאה הנמדדת, ואילו סוג האדמה וכמות המים הם משתנים קבועים שנשמרים זהים כדי שהניסוי יהיה הוגן."
+    },
+    {
+      type: "single",
+      scenario: "תלמידה בודקת כיצד משפיעה טמפרטורת המים על מהירות המסתו של סוכר. היא מקפידה שבכל הכוסות תהיה אותה כמות מים, אותה כמות סוכר ואותו קצב ערבוב.",
+      q: "מדוע היא מקפידה על כך?",
+      options: [
+        "כדי לוודא שהניסוי הוגן, וששינוי התוצאה נובע מהגורם הנבדק בלבד",
+        "כדי לחסוך בזמן ובציוד",
+        "כדי שיהיה קל יותר למדוד את זמן ההמסה",
+        "כדי להגדיל את מספר המשתנים הבלתי-תלויים בניסוי"
+      ],
+      correct: 0,
+      explain: "שמירה על משתנים קבועים היא שמבטיחה ניסוי הוגן: אם כמות הסוכר או קצב הערבוב היו משתנים בין הכוסות, לא היה ניתן לדעת אם ההבדל בזמן ההמסה נובע מהטמפרטורה או מגורם אחר. ניסוי מבוקר תקין כולל משתנה בלתי-תלוי אחד בלבד, ולכן הגדלת מספרם דווקא הייתה פוגמת בו."
+    },
+    {
+      type: "single",
+      q: "מהי השערה מדעית?",
+      options: [
+        "הצהרה מושכלת וניתנת לבדיקה, המציעה הסבר לתצפית ומנבאת תוצאה",
+        "ניחוש לגבי תוצאת הניסוי",
+        "המסקנה המתקבלת בתום הניסוי",
+        "דעה אישית של החוקר על התופעה"
+      ],
+      correct: 0,
+      explain: "השערה אינה ניחוש אלא הצהרה מבוססת ידע, המנוסחת בבירור ומנבאת מה צפוי לקרות תחת תנאים מסוימים. היא חייבת להיות ניתנת לבדיקה ואף להפרכה, והיא מנוסחת לפני הניסוי — בשונה מהמסקנה, המתקבלת רק לאחר איסוף הנתונים."
+    },
+    {
+      type: "single",
+      q: "חוקרת רוצה לבדוק האם תוספת דשן מגדילה את יבול העגבניות. איזו שיטת מחקר מתאימה ביותר לקביעת קשר של סיבה ותוצאה?",
+      options: [
+        "ניסוי מבוקר",
+        "מחקר תצפיתי",
+        "סקר ושאלון",
+        "חיפוש מידע במאגרי נתונים קיימים"
+      ],
+      correct: 0,
+      explain: "רק ניסוי מבוקר מאפשר לקבוע קשר של סיבה ותוצאה, משום שהחוקרת משנה בכוונה גורם אחד — כמות הדשן — ושומרת על יתר הגורמים קבועים. מחקר תצפיתי אינו כולל התערבות, וסקר אוסף עמדות ולכן אינו מאפשר הסקת מסקנות סיבתיות."
+    },
+    {
+      type: "truefalse",
+      q: "שאלה שאף תוצאה אינה יכולה להפריך — היא שאלה מדעית חזקה במיוחד.",
+      answer: false,
+      explain: "זהו היפוכו של כלל הזהב: אם שום תוצאה אינה יכולה להפריך את השאלה, היא אינה מדעית כלל. טענה שמסבירה כל תוצאה אפשרית — גם הצלחה וגם כישלון — אינה מסבירה דבר, מפני שאין ממצא שיכול להראות שהיא שגויה. היכולת להיות מופרך היא תנאי, ולא חולשה."
+    },
+    {
+      type: "single",
+      scenario: "בעיר נמצא כי בחודשים שבהם נמכרת יותר גלידה יש גם יותר טביעות.",
+      q: "מהי המסקנה הביקורתית הנכונה?",
+      options: [
+        "קיים קשר בין הנתונים, אך אין בכך הוכחה שאחד גורם לשני",
+        "מכירת הגלידה גורמת לעלייה במספר הטביעות",
+        "הטביעות גורמות לעלייה במכירות הגלידה",
+        "הנתונים שגויים, שכן שני המשתנים אינם קשורים זה לזה"
+      ],
+      correct: 0,
+      explain: "קשר אינו סיבתיות: שני דברים שמתרחשים יחד אינם בהכרח גורמים זה לזה. כאן קיים גורם שלישי — מזג האוויר החם — שמעלה במקביל גם את מכירות הגלידה וגם את מספר השוהים במים. הנתונים עצמם אינם שגויים, אלא הפרשנות הסיבתית שמייחסים להם."
+    },
+    {
+      type: "single",
+      scenario: "חוקר גילה שחלק מהנתונים אינם תומכים בהשערתו, והחליט לא לכלול אותם בדוח.",
+      q: "באיזה עיקרון של אתיקה מדעית הוא פגע?",
+      options: [
+        "יושר ואמינות — דיווח מדויק ללא הסתרת מידע שאינו תומך בהשערה",
+        "כבוד לנבדקים",
+        "הימנעות מנזק",
+        "שקיפות וביקורת"
+      ],
+      correct: 0,
+      explain: "יושר ואמינות מחייבים דיווח מדויק על הנתונים, ללא זיוף, סילוף או הסתרה של ממצאים שאינם תומכים בהשערה. הסתרת נתונים מעוותת את התמונה המדעית ומטעה חוקרים אחרים. כבוד לנבדקים והימנעות מנזק עוסקים בהגנה על המשתתפים, ולא באופן הדיווח."
+    },
+    {
+      type: "classify",
+      scenario: "בניסוי נבדקת השפעת גובה השחרור של כדור על גובה הקפיצה שלו מהרצפה.",
+      q: "סווגו כל גורם לסוג המשתנה שלו.",
+      categories: ["משתנה בלתי-תלוי", "משתנה תלוי", "משתנה קבוע"],
+      items: [
+        { text: "הגובה שממנו משחררים את הכדור", cat: "משתנה בלתי-תלוי" },
+        { text: "גובה הקפיצה של הכדור מהרצפה", cat: "משתנה תלוי" },
+        { text: "סוג הכדור ומסתו", cat: "משתנה קבוע" },
+        { text: "סוג משטח הרצפה", cat: "משתנה קבוע" }
+      ],
+      explain: "הגובה שממנו משחררים הוא הגורם שמשנים בכוונה, ולכן הוא המשתנה הבלתי-תלוי, וגובה הקפיצה הוא התוצאה הנמדדת. סוג הכדור ומשטח הרצפה חייבים להישאר קבועים, שכן כדור אחר או רצפה אחרת היו משנים את גובה הקפיצה ומונעים ייחוס התוצאה לגובה השחרור בלבד."
+    },
+    {
+      type: "classify",
+      q: "התאימו כל מצב לשיטת המחקר המתאימה לו.",
+      categories: ["ניסוי מבוקר", "מחקר תצפיתי", "סקר ושאלון"],
+      items: [
+        { text: "בדיקת יעילות תרופה חדשה, כאשר קבוצה אחת מקבלת את התרופה וקבוצה אחרת מקבלת אינבו", cat: "ניסוי מבוקר" },
+        { text: "מדידת זמני הטעינה של אתר אינטרנט אצל משתמשים אמיתיים במהלך יום עבודה רגיל", cat: "מחקר תצפיתי" },
+        { text: "בירור שביעות רצון המשתמשים מממשק חדש באפליקציה", cat: "סקר ושאלון" },
+        { text: "השוואת מהירות שני אלגוריתמים למיון על אותה רשימת נתונים ובאותו מחשב", cat: "ניסוי מבוקר" }
+      ],
+      explain: "בשני המקרים של הניסוי המבוקר יש התערבות מכוונת ושליטה במשתנים: חלוקה לקבוצת תרופה וקבוצת אינבו, או הרצת שני אלגוריתמים על אותם נתונים ובאותה חומרה. מדידת זמני טעינה אצל משתמשים בסביבתם הטבעית היא תצפית ללא התערבות, ובירור שביעות רצון אוסף עמדות ולכן מתאים לסקר."
+    },
+    {
+      type: "single",
+      scenario: "תלמיד כתב: אם אשקה צמח במי סוכר במקום במים, הוא יגדל טוב יותר, כי סוכר נותן אנרגיה.",
+      q: "מדוע זו השערה מדעית תקינה?",
+      options: [
+        "היא מבוססת ידע, מנוסחת בצורת אם... אז..., ואפשר לבדוק ולהפריך אותה בניסוי",
+        "היא נכונה מבחינה מדעית, ולכן היא השערה טובה",
+        "היא נשמעת הגיונית, ולכן אין צורך לבדוק אותה",
+        "היא מנוסחת כשאלה, ולכן אפשר לחקור אותה"
+      ],
+      correct: 0,
+      explain: "השערה תקינה נמדדת באופן ניסוחה ולא בנכונותה: היא נובעת מידע קיים, מציינת בבירור את המשתנים, מנבאת תוצאה בתנאי מסוים, וניתן לבדוק ואף להפריך אותה בניסוי. השערה עשויה להתברר כשגויה ועדיין להיות השערה מדעית לכל דבר, ודווקא זו שנשמעת הגיונית מחייבת בדיקה."
+    },
+    {
+      type: "single",
+      q: "איזה ניסוח הופך את השאלה האם מוזיקה משפיעה על לימודים? לשאלת חקר ממוקדת ומנוסחת חד-משמעית?",
+      options: [
+        "כיצד משפיעה האזנה למוזיקה אינסטרומנטלית על ציוני מבחן בחשבון בקרב תלמידי כיתה י׳?",
+        "האם מוזיקה טובה ללימודים או מזיקה להם?",
+        "למה תלמידים רבים אוהבים ללמוד עם מוזיקה?",
+        "האם כדאי להאזין למוזיקה בזמן הלימודים?"
+      ],
+      correct: 0,
+      explain: "שאלה מנוסחת חד-משמעית מציינת את האוכלוסייה, הגיל והתנאים לפי הצורך, וכאן מוגדרים סוג המוזיקה, המדד הנמדד וקבוצת התלמידים. הניסוחים האחרים כלליים מדי, שיפוטיים או מבקשים דעה, ולכן אי אפשר לתרגם אותם למדידה ברורה."
+    },
+    {
+      type: "single",
+      scenario: "לפני סקר בבית הספר נוסחה השאלה: עד כמה מפריעה לך ההפסקה הקצרה והבלתי-מספקת?",
+      q: "מה הבעיה בשאלה זו?",
+      options: [
+        "היא שאלה מוטה — ניסוחה מכוון את הנשאל לתשובה מסוימת מראש",
+        "היא רחבה מדי ואינה ממוקדת בנושא אחד",
+        "אי אפשר לאסוף עליה נתונים כמותיים",
+        "היא אינה עומדת בסטנדרטים אתיים של מחקר"
+      ],
+      correct: 0,
+      explain: "השאלה כוללת בתוכה את המסקנה: היא קובעת מראש שההפסקה קצרה ובלתי-מספקת, ולכן דוחפת את הנשאל להסכים. זיהוי שאלה מוטה הוא חלק מהחשיבה הביקורתית, ושאלה כזו מייצרת נתונים שאינם משקפים את העמדות האמיתיות. ניסוח ניטרלי היה שואל עד כמה משך ההפסקה מספק."
+    },
+    {
+      type: "single",
+      scenario: "מפתחת שיערה שאלגוריתם חדש שכתבה ירוץ מהר יותר מהאלגוריתם הקיים, אך המדידות הראו שהוא איטי יותר.",
+      q: "מה עליה לעשות?",
+      options: [
+        "לדווח על התוצאות כפי שהן — גם הפרכה היא תוצאה מדעית בעלת ערך",
+        "להריץ את המדידה שוב ושוב עד שיתקבלו תוצאות התומכות בהשערה",
+        "לשנות את ההשערה בדיעבד כך שתתאים לתוצאות שהתקבלו",
+        "לוותר על הבדיקה, שכן השערה שהופרכה מעידה על כישלון"
+      ],
+      correct: 0,
+      explain: "השערה שהופרכה אינה כישלון אלא ידע חדש: כעת ידוע שהאלגוריתם החדש אינו מהיר יותר בתנאים שנבדקו. חזרה על המדידה עד לקבלת התוצאה הרצויה או שינוי ההשערה בדיעבד פוגעים ביושר ובאמינות, והופכים את הבדיקה לחסרת ערך. פתיחות לביקורת ולהפרכה היא מליבת המדע."
+    },
+    {
+      type: "truefalse",
+      q: "סקר ושאלון מספקים תמונה רחבה על עמדות אוכלוסייה גדולה, אך אינם מאפשרים להסיק מסקנות סיבתיות.",
+      answer: true,
+      explain: "סקר אוסף מידע על עמדות, אמונות והתנהגויות מאוכלוסייה גדולה, ולכן כוחו בהיקף ובתמונה הרחבה שהוא מספק. ואולם אין בו התערבות ואין שליטה במשתנים, ולכן הוא יכול להצביע על קשרים בלבד ולא לקבוע מה גורם למה. לקביעת סיבתיות נדרש ניסוי מבוקר."
+    },
+    {
+      type: "single",
+      scenario: "חוקר מפרסם את שיטות המחקר, הנתונים והתוצאות שלו באופן פתוח, כדי שחוקרים אחרים יוכלו לבחון אותם ולשחזר את הניסוי.",
+      q: "באיזה עיקרון אתי מדובר?",
+      options: [
+        "שקיפות וביקורת",
+        "הימנעות מנזק",
+        "כבוד לנבדקים",
+        "יושר ואמינות"
+      ],
+      correct: 0,
+      explain: "שקיפות וביקורת פירושן שיתוף פתוח של שיטות, נתונים ותוצאות, כדי לאפשר ביקורת עמיתים ושחזור של הניסוי. זהו המנגנון שמאפשר למדע לתקן את עצמו לאורך זמן. יושר ואמינות עוסקים בדיוק הדיווח עצמו, ואילו שקיפות עוסקת בהנגשתו לבדיקה של אחרים."
+    }
+  ];
+
+  var HEB_MONTHS = ["ינואר","פברואר","מרץ","אפריל","מאי","יוני","יולי","אוגוסט","ספטמבר","אוקטובר","נובמבר","דצמבר"];
+
+  var state = { order: [], index: 0, score: 0, answered: 0, startedAt: 0 };
+
+  var el = {
+    cover: document.getElementById("cover"),
+    quiz: document.getElementById("quiz"),
+    result: document.getElementById("result"),
+    coverMeta: document.getElementById("cover-meta"),
+    startBtn: document.getElementById("start-btn"),
+    host: document.getElementById("question-host"),
+    counter: document.getElementById("counter"),
+    points: document.getElementById("points"),
+    fill: document.getElementById("fill"),
+    prevBtn: document.getElementById("prev-btn"),
+    nextBtn: document.getElementById("next-btn"),
+    resetBtn: document.getElementById("reset-btn"),
+    resultTitle: document.getElementById("result-title"),
+    scoreRing: document.getElementById("score-ring"),
+    outcome: document.getElementById("outcome"),
+    resultDetail: document.getElementById("result-detail"),
+    review: document.getElementById("review"),
+    reviewList: document.getElementById("review-list"),
+    confetti: document.getElementById("confetti")
+  };
+
+  var now = new Date();
+  el.coverMeta.innerHTML = "רוני רובן<br>" + HEB_MONTHS[now.getMonth()] + " " + now.getFullYear() + " · תשפ״ז";
+
+  function shuffle(arr) {
+    for (var i = arr.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+    }
+    return arr;
+  }
+
+  function buildOrder() {
+    state.order = shuffle(QUESTIONS.map(function (q, i) { return i; }));
+    QUESTIONS.forEach(function (q) {
+      q.picked = null;
+      q.done = false;
+      q.gotIt = false;
+      if (q.type === "single") {
+        q.optOrder = shuffle(q.options.map(function (_, i) { return i; }));
+      }
+      if (q.type === "classify") {
+        q.itemOrder = shuffle(q.items.map(function (_, i) { return i; }));
+        q.picks = q.items.map(function () { return ""; });
+      }
+    });
+  }
+
+  function svgIcon() {
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+           '<circle cx="11" cy="11" r="7"></circle><path d="M16.5 16.5L21 21"></path></svg>';
+  }
+
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c];
+    });
+  }
+
+  function render() {
+    var q = QUESTIONS[state.order[state.index]];
+    var html = '<div class="question">';
+    html += '<div class="question-heading"><span class="question-icon">' + svgIcon() + '</span>';
+    html += '<p class="q-text" style="margin:8px 0 0">' + esc(q.q) + '</p></div>';
+    if (q.scenario) html += '<div class="scenario">' + esc(q.scenario) + '</div>';
+
+    if (q.type === "single") {
+      html += '<div class="choices">';
+      q.optOrder.forEach(function (optIdx, pos) {
+        html += '<button class="choice" type="button" data-pos="' + pos + '">' + esc(q.options[optIdx]) + '</button>';
+      });
+      html += '</div>';
+    } else if (q.type === "truefalse") {
+      html += '<div class="choices">';
+      html += '<button class="choice" type="button" data-tf="true">נכון</button>';
+      html += '<button class="choice" type="button" data-tf="false">לא נכון</button>';
+      html += '</div>';
+    } else if (q.type === "classify") {
+      html += '<div class="match-list">';
+      q.itemOrder.forEach(function (itemIdx) {
+        var item = q.items[itemIdx];
+        var sel = '<select data-item="' + itemIdx + '"><option value="">בחרו קטגוריה</option>';
+        q.categories.forEach(function (c) {
+          sel += '<option value="' + esc(c) + '"' + (q.picks[itemIdx] === c ? " selected" : "") + '>' + esc(c) + '</option>';
+        });
+        sel += '</select>';
+        html += '<div class="match" data-row="' + itemIdx + '"><span>' + esc(item.text) + '</span>' + sel + '</div>';
+      });
+      html += '</div>';
+      html += '<button class="check-match" type="button" id="check-match">בדיקה</button>';
+    }
+
+    html += '<div id="feedback-host"></div></div>';
+    el.host.innerHTML = html;
+
+    if (q.done) {
+      lockUI(q);
+      showFeedback(q);
+    }
+
+    wire(q);
+    updateChrome();
+  }
+
+  function wire(q) {
+    if (q.type === "single") {
+      Array.prototype.forEach.call(el.host.querySelectorAll(".choice"), function (btn) {
+        btn.addEventListener("click", function () {
+          if (q.done) return;
+          var pos = Number(btn.getAttribute("data-pos"));
+          q.picked = pos;
+          q.gotIt = (q.optOrder[pos] === q.correct);
+          finish(q);
+        });
+      });
+    } else if (q.type === "truefalse") {
+      Array.prototype.forEach.call(el.host.querySelectorAll(".choice"), function (btn) {
+        btn.addEventListener("click", function () {
+          if (q.done) return;
+          var val = btn.getAttribute("data-tf") === "true";
+          q.picked = val;
+          q.gotIt = (val === q.answer);
+          finish(q);
+        });
+      });
+    } else if (q.type === "classify") {
+      Array.prototype.forEach.call(el.host.querySelectorAll("select"), function (sel) {
+        sel.addEventListener("change", function () {
+          var idx = Number(sel.getAttribute("data-item"));
+          q.picks[idx] = sel.value;
+          var btn = document.getElementById("check-match");
+          if (btn) btn.disabled = q.picks.some(function (p) { return !p; });
+        });
+      });
+      var check = document.getElementById("check-match");
+      if (check) {
+        check.disabled = q.picks.some(function (p) { return !p; });
+        check.addEventListener("click", function () {
+          if (q.done) return;
+          q.gotIt = q.items.every(function (item, i) { return q.picks[i] === item.cat; });
+          finish(q);
+        });
+      }
+    }
+  }
+
+  function finish(q) {
+    q.done = true;
+    state.answered++;
+    if (q.gotIt) state.score++;
+    lockUI(q);
+    showFeedback(q);
+    updateChrome();
+  }
+
+  function lockUI(q) {
+    if (q.type === "single") {
+      Array.prototype.forEach.call(el.host.querySelectorAll(".choice"), function (btn) {
+        var pos = Number(btn.getAttribute("data-pos"));
+        btn.disabled = true;
+        if (q.optOrder[pos] === q.correct) btn.classList.add("correct");
+        else if (pos === q.picked) btn.classList.add("wrong");
+      });
+    } else if (q.type === "truefalse") {
+      Array.prototype.forEach.call(el.host.querySelectorAll(".choice"), function (btn) {
+        var val = btn.getAttribute("data-tf") === "true";
+        btn.disabled = true;
+        if (val === q.answer) btn.classList.add("correct");
+        else if (val === q.picked) btn.classList.add("wrong");
+      });
+    } else if (q.type === "classify") {
+      Array.prototype.forEach.call(el.host.querySelectorAll("select"), function (sel) {
+        var idx = Number(sel.getAttribute("data-item"));
+        sel.disabled = true;
+        sel.value = q.picks[idx];
+        var row = el.host.querySelector('.match[data-row="' + idx + '"]');
+        if (row) row.classList.add(q.picks[idx] === q.items[idx].cat ? "correct" : "wrong");
+      });
+      var btn = document.getElementById("check-match");
+      if (btn) btn.disabled = true;
+    }
+  }
+
+  function showFeedback(q) {
+    var host = document.getElementById("feedback-host");
+    if (!host) return;
+    var title = q.gotIt ? "תשובה נכונה" : "תשובה שגויה";
+    if (q.type === "classify" && !q.gotIt) title = "חלק מהסיווגים שגויים";
+    host.innerHTML = '<div class="feedback' + (q.gotIt ? "" : " bad") + '"><strong>' + title + '</strong><p>' + esc(q.explain) + '</p></div>';
+  }
+
+  function updateChrome() {
+    el.counter.textContent = "שאלה " + (state.index + 1) + " מתוך " + QUESTIONS.length;
+    el.points.textContent = state.score + " נקודות";
+    el.fill.style.width = (state.answered / QUESTIONS.length * 100) + "%";
+    el.prevBtn.disabled = state.index === 0;
+    el.nextBtn.textContent = (state.index === QUESTIONS.length - 1) ? "סיום" : "הבאה";
+  }
+
+  el.startBtn.addEventListener("click", function () {
+    buildOrder();
+    state.index = 0; state.score = 0; state.answered = 0;
+    state.startedAt = Date.now();
+    el.cover.classList.add("hidden");
+    el.quiz.classList.remove("hidden");
+    el.result.classList.add("hidden");
+    render();
+  });
+
+  el.prevBtn.addEventListener("click", function () {
+    if (state.index > 0) { state.index--; render(); }
+  });
+
+  el.nextBtn.addEventListener("click", function () {
+    if (state.index < QUESTIONS.length - 1) { state.index++; render(); }
+    else showResult();
+  });
+
+  el.resetBtn.addEventListener("click", function () {
+    el.result.classList.add("hidden");
+    el.cover.classList.remove("hidden");
+    el.confetti.classList.add("hidden");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  function showResult() {
+    var pct = Math.round(state.score / QUESTIONS.length * 100);
+    var passed = pct >= PASS;
+    var mins = Math.max(1, Math.round((Date.now() - state.startedAt) / 60000));
+
+    el.quiz.classList.add("hidden");
+    el.result.classList.remove("hidden");
+    el.resultTitle.textContent = "שאלת חקר והתהליך המדעי";
+    el.scoreRing.textContent = pct;
+    el.scoreRing.classList.toggle("fail", !passed);
+    el.outcome.textContent = passed ? "עברת את השאלון" : "לא עברת את השאלון";
+    el.outcome.style.color = passed ? "var(--lab-deep)" : "var(--coral)";
+    el.resultDetail.textContent = "ענית נכון על " + state.score + " מתוך " + QUESTIONS.length + " שאלות · זמן: " + mins + " דקות · סף מעבר: " + PASS;
+
+    var wrong = [];
+    state.order.forEach(function (qi, pos) {
+      var q = QUESTIONS[qi];
+      if (!q.gotIt) wrong.push((pos + 1) + ". " + q.q);
+    });
+    if (wrong.length) {
+      el.review.classList.remove("hidden");
+      el.reviewList.innerHTML = wrong.map(function (w) { return "<li>" + esc(w.replace(/^\d+\.\s/, "")) + "</li>"; }).join("");
+    } else {
+      el.review.classList.add("hidden");
+    }
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (passed) confetti();
+  }
+
+  function confetti() {
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var c = el.confetti;
+    c.classList.remove("hidden");
+    var ctx = c.getContext("2d");
+    var W = c.width = window.innerWidth;
+    var H = c.height = window.innerHeight;
+    var colors = ["#2E7D52", "#E85D2A", "#1F5B3A", "#D93F4C", "#8FC9A5"];
+    var bits = [];
+    for (var i = 0; i < 130; i++) {
+      bits.push({
+        x: Math.random() * W, y: -20 - Math.random() * H * 0.5,
+        w: 6 + Math.random() * 7, h: 8 + Math.random() * 9,
+        vy: 1.8 + Math.random() * 2.6, vx: -1 + Math.random() * 2,
+        rot: Math.random() * Math.PI, vr: -0.12 + Math.random() * 0.24,
+        color: colors[Math.floor(Math.random() * colors.length)]
+      });
+    }
+    var frames = 0;
+    (function tick() {
+      ctx.clearRect(0, 0, W, H);
+      bits.forEach(function (b) {
+        b.x += b.vx; b.y += b.vy; b.rot += b.vr;
+        ctx.save(); ctx.translate(b.x, b.y); ctx.rotate(b.rot);
+        ctx.fillStyle = b.color; ctx.fillRect(-b.w / 2, -b.h / 2, b.w, b.h);
+        ctx.restore();
+      });
+      frames++;
+      if (frames < 320) requestAnimationFrame(tick);
+      else { ctx.clearRect(0, 0, W, H); c.classList.add("hidden"); }
+    })();
+  }
+})();
+</script>
+</body>
+</html>
