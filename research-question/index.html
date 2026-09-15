@@ -118,8 +118,53 @@
       color:#5A3322; font-weight:700; line-height:1.8;
     }
     .review { text-align:right; margin-top:26px; padding-top:22px; border-top:1px solid var(--line); }
-    .review h3 { font-size:18px; margin:0 0 12px; color:var(--lab-deep); }
+    .review h3 { font-size:18px; margin:0 0 4px; color:var(--lab-deep); }
+    .review .review-name { margin:0 0 12px; color:var(--flask); font-weight:800; font-size:16px; }
     .review ol { margin:0; padding-inline-start:20px; color:var(--muted); line-height:1.8; font-weight:600; }
+    .result-name { margin:0 0 4px; color:var(--flask); font-weight:800; font-size:17px; }
+
+    /* name field on cover */
+    .name-wrap { margin:22px 0 20px; }
+    .name-wrap label { display:block; margin-bottom:8px; font-weight:800; color:var(--lab-deep); }
+    .name-wrap input {
+      width:100%; padding:14px 16px; color:var(--ink); background:#fff;
+      border:2px solid var(--line); border-radius:var(--radius-sm); outline:none;
+      transition:border-color .18s, box-shadow .18s;
+    }
+    .name-wrap input::placeholder { color:#9BB3A4; }
+    .name-wrap input:focus { border-color:var(--lab); box-shadow:0 0 0 4px rgba(46,125,82,.15); }
+    .name-hint { margin:8px 0 0; font-size:13.5px; color:var(--muted); font-weight:600; }
+
+    /* concept explainer screen */
+    .concept-grid { display:grid; gap:14px; margin:22px 0 26px; }
+    @media (min-width:640px) { .concept-grid { grid-template-columns:1fr 1fr; } }
+    .concept {
+      position:relative; padding:20px 22px; background:#FCFEFC;
+      border:1px solid var(--line); border-radius:var(--radius); line-height:1.75;
+    }
+    .concept.philo { border-right:5px solid var(--lab); }
+    .concept.ethic { border-right:5px solid var(--flask); }
+    .concept-head { display:flex; align-items:center; gap:11px; margin-bottom:10px; }
+    .concept-badge { flex:0 0 40px; display:grid; place-items:center; width:40px; height:40px; border-radius:50%; background:var(--mist); border:1px solid var(--line); color:var(--lab); }
+    .concept.ethic .concept-badge { color:var(--flask); background:#FDF3EE; border-color:#F3D9CC; }
+    .concept-badge svg { width:22px; height:22px; }
+    .concept h3 { margin:0; font-size:20px; font-weight:800; color:var(--lab-deep); }
+    .concept.ethic h3 { color:#A8431C; }
+    .concept p { margin:0 0 10px; }
+    .concept .eg { margin:0; padding:11px 13px; border-radius:10px; background:var(--mist); font-weight:700; color:var(--lab-deep); font-size:14.5px; }
+    .concept.ethic .eg { background:#FDF3EE; color:#5A3322; }
+    .concept-note { margin:0 0 4px; padding:15px 18px; border-radius:var(--radius-sm); background:var(--mist); border:1px solid var(--line); font-weight:600; line-height:1.75; }
+
+    /* background illustrations */
+    .bg-art { position:fixed; inset:0; z-index:-1; overflow:hidden; pointer-events:none; }
+    .bg-art svg { position:absolute; opacity:.07; color:var(--lab); }
+    .bg-art .b1 { width:210px; top:6%; left:-46px; transform:rotate(-14deg); }
+    .bg-art .b2 { width:170px; top:34%; right:-38px; color:var(--flask); opacity:.06; transform:rotate(12deg); }
+    .bg-art .b3 { width:150px; bottom:8%; left:4%; opacity:.055; transform:rotate(7deg); }
+    .bg-art .b4 { width:130px; top:64%; right:9%; color:var(--flask); opacity:.05; transform:rotate(-9deg); }
+    @media (max-width:700px) { .bg-art .b2, .bg-art .b4 { display:none; } .bg-art .b1 { width:150px; } .bg-art .b3 { width:110px; } }
+    .panel-mark { position:absolute; top:14px; left:16px; width:58px; height:58px; color:var(--lab); opacity:.08; pointer-events:none; }
+
     #confetti { position:fixed; inset:0; pointer-events:none; z-index:9; }
     @keyframes enter { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
     @keyframes pop { 0% { transform:scale(.94); } 55% { transform:scale(1.035); } 100% { transform:scale(1); } }
@@ -137,6 +182,26 @@
   </style>
 </head>
 <body>
+<div class="bg-art" aria-hidden="true">
+  <svg class="b1" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linejoin="round">
+    <path d="M40 14h20v30l19 36a10 10 0 0 1-9 15H30a10 10 0 0 1-9-15l19-36z"/>
+    <path d="M37 14h26" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="44" cy="70" r="3.4" fill="currentColor" stroke="none"/>
+    <circle cx="57" cy="78" r="2.6" fill="currentColor" stroke="none"/>
+  </svg>
+  <svg class="b2" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round">
+    <circle cx="43" cy="43" r="26"/>
+    <path d="M62 62l24 24"/>
+  </svg>
+  <svg class="b3" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M50 16a22 22 0 0 0-13 39.6V66h26v-10.4A22 22 0 0 0 50 16z"/>
+    <path d="M41 76h18M44 85h12"/>
+  </svg>
+  <svg class="b4" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M18 78V44M38 78V28M58 78V54M78 78V34"/>
+    <path d="M12 88h76"/>
+  </svg>
+</div>
 <canvas id="confetti" class="hidden"></canvas>
 <main class="shell">
   <div class="brand"><span class="dot"></span><span>מבוא למדעים · שאלון סיכום</span></div>
@@ -152,8 +217,13 @@
           <span class="chip">20 שאלות</span>
           <span class="chip">סף מעבר: 60</span>
         </div>
-        <p class="meta" style="margin-top:18px">בשאלון תתבקשו לזהות שאלות חקר, משתנים, השערות ושיטות מחקר, ולהפעיל חשיבה ביקורתית. לאחר כל תשובה יוצג הסבר.</p>
-        <button class="start" id="start-btn" type="button">התחל</button>
+        <p class="meta" style="margin-top:18px">בשאלון תתבקשו לזהות שאלות חקר, משתנים, השערות ושיטות מחקר. לאחר כל תשובה יוצג הסבר.</p>
+        <div class="name-wrap">
+          <label for="student-name">שם התלמיד/ה</label>
+          <input id="student-name" type="text" autocomplete="name" placeholder="שם פרטי ושם משפחה">
+          <p class="name-hint">השם יופיע בדף הסיכום שתצלמו ותגישו.</p>
+        </div>
+        <button class="start" id="start-btn" type="button" disabled>התחילו</button>
       </div>
       <svg class="cover-art" viewBox="0 0 200 200" role="img" aria-label="איור מבחנה ועדשה מגדלת">
         <circle cx="100" cy="100" r="92" fill="#EDF5EE"/>
@@ -166,6 +236,51 @@
         <circle cx="146" cy="58" r="21" fill="none" stroke="#1F5B3A" stroke-width="5"/>
         <path d="M161 73l17 17" stroke="#1F5B3A" stroke-width="7" stroke-linecap="round"/>
       </svg>
+    </div>
+  </section>
+
+  <!-- CONCEPTS -->
+  <section class="panel hidden" id="concepts">
+    <svg class="panel-mark" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" aria-hidden="true">
+      <circle cx="50" cy="50" r="34"/><path d="M50 32v20M50 64v2"/>
+    </svg>
+    <div class="eyebrow">לפני שמתחילים</div>
+    <h2>שני מושגים שכדאי להכיר</h2>
+    <p class="meta" style="margin-top:10px">בשאלון תתבקשו לסווג שאלות. שתי הקטגוריות האלה מתבלבלות בקלות, ולכן הנה ההבדל ביניהן.</p>
+
+    <div class="concept-grid">
+      <div class="concept philo">
+        <div class="concept-head">
+          <span class="concept-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="9"/><path d="M9.2 9.4a2.9 2.9 0 1 1 3.6 2.8v1.4"/><path d="M12 17.2v.2"/>
+            </svg>
+          </span>
+          <h3>שאלה פילוסופית</h3>
+        </div>
+        <p>שאלה העוסקת במשמעות, בקיום או בתפיסת עולם. אין דרך לבדוק אותה בניסוי או בתצפית, ולכן היא אינה שאלה מדעית — לא משום שאינה חשובה, אלא משום שאף נתון אינו יכול להכריע בה.</p>
+        <p class="eg">לדוגמה: מהי משמעות החיים?</p>
+      </div>
+
+      <div class="concept ethic">
+        <div class="concept-head">
+          <span class="concept-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 4v16M6 8h12"/><path d="M6 8l-3 6h6zM18 8l-3 6h6z"/><path d="M8 20h8"/>
+            </svg>
+          </span>
+          <h3>שאלה אתית</h3>
+        </div>
+        <p>שאלה העוסקת במותר ובאסור, בטוב וברע — כלומר בערכים. גם אותה אי אפשר להכריע בניסוי: הנתונים יכולים לומר מה יקרה, אך לא אם ראוי לעשות זאת.</p>
+        <p class="eg">לדוגמה: האם מותר לערוך ניסויים בבעלי חיים?</p>
+      </div>
+    </div>
+
+    <p class="concept-note">המשותף לשתיהן: אף תוצאה אינה יכולה להכריע בהן, ולכן שתיהן אינן שאלות מחקריות. בשאלון הן מופיעות יחד בקטגוריה אחת — <strong>שאלה פילוסופית/אתית</strong>.</p>
+
+    <div class="navigation">
+      <button class="nav-button" id="concepts-back" type="button">חזרה</button>
+      <button class="next" id="concepts-next" type="button">הבנתי, אפשר להתחיל</button>
     </div>
   </section>
 
@@ -194,6 +309,7 @@
       </svg>
       <div class="eyebrow">סיום השאלון</div>
       <h2 id="result-title"></h2>
+      <p class="result-name" id="result-name"></p>
       <div class="score" id="score-ring"></div>
       <p class="outcome" id="outcome"></p>
       <p class="meta" id="result-detail"></p>
@@ -204,10 +320,11 @@
 
       <div class="review hidden" id="review">
         <h3>שאלות שבהן טעיתם</h3>
+        <p class="review-name" id="review-name"></p>
         <ol id="review-list"></ol>
       </div>
 
-      <div style="margin-top:26px"><button class="reset" id="reset-btn" type="button">התחל מחדש</button></div>
+      <div style="margin-top:26px"><button class="reset" id="reset-btn" type="button">התחילו מחדש</button></div>
     </div>
   </section>
 </main>
@@ -460,13 +577,19 @@
 
   var HEB_MONTHS = ["ינואר","פברואר","מרץ","אפריל","מאי","יוני","יולי","אוגוסט","ספטמבר","אוקטובר","נובמבר","דצמבר"];
 
-  var state = { order: [], index: 0, score: 0, answered: 0, startedAt: 0 };
+  var state = { order: [], index: 0, score: 0, answered: 0, startedAt: 0, name: "" };
 
   var el = {
     cover: document.getElementById("cover"),
+    concepts: document.getElementById("concepts"),
+    conceptsBack: document.getElementById("concepts-back"),
+    conceptsNext: document.getElementById("concepts-next"),
     quiz: document.getElementById("quiz"),
     result: document.getElementById("result"),
     coverMeta: document.getElementById("cover-meta"),
+    nameInput: document.getElementById("student-name"),
+    resultName: document.getElementById("result-name"),
+    reviewName: document.getElementById("review-name"),
     startBtn: document.getElementById("start-btn"),
     host: document.getElementById("question-host"),
     counter: document.getElementById("counter"),
@@ -662,14 +785,42 @@
     el.nextBtn.textContent = (state.index === QUESTIONS.length - 1) ? "סיום" : "הבאה";
   }
 
+  function nameReady() {
+    return el.nameInput.value.trim().length > 0;
+  }
+
+  el.nameInput.addEventListener("input", function () {
+    el.startBtn.disabled = !nameReady();
+  });
+
+  el.nameInput.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" && nameReady()) el.startBtn.click();
+  });
+
   el.startBtn.addEventListener("click", function () {
+    if (!nameReady()) return;
+    state.name = el.nameInput.value.trim();
+    el.cover.classList.add("hidden");
+    el.concepts.classList.remove("hidden");
+    el.result.classList.add("hidden");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  el.conceptsBack.addEventListener("click", function () {
+    el.concepts.classList.add("hidden");
+    el.cover.classList.remove("hidden");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  el.conceptsNext.addEventListener("click", function () {
     buildOrder();
     state.index = 0; state.score = 0; state.answered = 0;
     state.startedAt = Date.now();
-    el.cover.classList.add("hidden");
+    el.concepts.classList.add("hidden");
     el.quiz.classList.remove("hidden");
     el.result.classList.add("hidden");
     render();
+    window.scrollTo({ top: 0, behavior: "smooth" });
   });
 
   el.prevBtn.addEventListener("click", function () {
@@ -683,8 +834,11 @@
 
   el.resetBtn.addEventListener("click", function () {
     el.result.classList.add("hidden");
+    el.quiz.classList.add("hidden");
+    el.concepts.classList.add("hidden");
     el.cover.classList.remove("hidden");
     el.confetti.classList.add("hidden");
+    el.startBtn.disabled = !nameReady();
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
 
@@ -696,20 +850,22 @@
     el.quiz.classList.add("hidden");
     el.result.classList.remove("hidden");
     el.resultTitle.textContent = "שאלת חקר והתהליך המדעי";
+    el.resultName.textContent = state.name;
     el.scoreRing.textContent = pct;
     el.scoreRing.classList.toggle("fail", !passed);
-    el.outcome.textContent = passed ? "עברת את השאלון" : "לא עברת את השאלון";
+    el.outcome.textContent = passed ? "עברתם את השאלון" : "כדאי לחזור על המושגים של יחידת הלימוד";
     el.outcome.style.color = passed ? "var(--lab-deep)" : "var(--coral)";
-    el.resultDetail.textContent = "ענית נכון על " + state.score + " מתוך " + QUESTIONS.length + " שאלות · זמן: " + mins + " דקות · סף מעבר: " + PASS;
+    el.resultDetail.textContent = "עניתם נכון על " + state.score + " מתוך " + QUESTIONS.length + " שאלות · זמן: " + mins + " דקות · סף מעבר: " + PASS;
 
     var wrong = [];
     state.order.forEach(function (qi, pos) {
       var q = QUESTIONS[qi];
-      if (!q.gotIt) wrong.push((pos + 1) + ". " + q.q);
+      if (!q.gotIt) wrong.push(q.q);
     });
     if (wrong.length) {
       el.review.classList.remove("hidden");
-      el.reviewList.innerHTML = wrong.map(function (w) { return "<li>" + esc(w.replace(/^\d+\.\s/, "")) + "</li>"; }).join("");
+      el.reviewName.textContent = state.name;
+      el.reviewList.innerHTML = wrong.map(function (w) { return "<li>" + esc(w) + "</li>"; }).join("");
     } else {
       el.review.classList.add("hidden");
     }
