@@ -3,232 +3,239 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#F7FAF7">
+  <meta name="theme-color" content="#0F2A3D">
   <title>שאלוני מבוא למדעים</title>
   <meta name="description" content="שאלוני סיכום לכל יחידות מבוא למדעים, כיתה י׳.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700;800&family=Assistant:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg:#F7FAF7; --paper:#FFFFFF; --ink:#15221B; --ink-2:#3D5245; --ink-3:#5E7466;
-      --line:#D9E5DC; --line-strong:#B9CDBF;
-      --green:#2A6F4B; --green-deep:#1D5237; --green-tint:#E7F2EA;
-      --flask:#D9552A; --flask-tint:#FBEDE6;
-      --ease-out:cubic-bezier(0.23,1,0.32,1);
+      --sky:#EDF3F7; --paper:#FFFFFF; --ink:#0F2A3D; --ink-2:#2E4A5E; --ink-3:#53697A;
+      --line:#CBD8E2; --rail:#B4C5D2;
+      --amber:#E09A2B; --amber-deep:#9A6410; --amber-tint:#FFF3DE;
+      --radius:14px; --ease:cubic-bezier(0.23,1,0.32,1);
+      --display:Rubik, system-ui, sans-serif; --body:Assistant, system-ui, sans-serif;
     }
     * { box-sizing:border-box; }
-    html { background:var(--bg); }
-    body {
-      margin:0; color:var(--ink); background:var(--bg);
-      font-family:Heebo, system-ui, sans-serif; font-size:17px; line-height:1.55;
-      -webkit-font-smoothing:antialiased;
-    }
-    .wrap { width:min(760px, calc(100% - 32px)); margin:0 auto; padding:48px 0 96px; }
+    html { background:var(--sky); }
+    body { margin:0; background:var(--sky); color:var(--ink); font-family:var(--body); font-size:17px; line-height:1.5; -webkit-font-smoothing:antialiased; }
 
-    /* header */
-    .brand { display:flex; align-items:center; gap:10px; font-weight:700; font-size:14px; color:var(--green); }
-    .brand i { width:10px; height:10px; border-radius:50%; background:var(--flask); }
-    h1 {
-      font-size:clamp(38px, 7vw, 64px); line-height:1.08; letter-spacing:-0.02em; font-weight:900;
-      margin:14px 0 10px; color:var(--green-deep); text-wrap:balance;
-    }
-    .sub { margin:0; color:var(--ink-2); font-weight:500; font-size:18px; }
-    .status { margin:28px 0 0; display:flex; align-items:center; gap:14px; font-size:15px; font-weight:500; color:var(--ink-2); }
-    .status .bar { flex:1; height:4px; background:var(--line); border-radius:2px; overflow:hidden; }
-    .status .bar i { display:block; height:100%; width:6%; background:var(--green); transform-origin:right; animation:grow .6s var(--ease-out) both; }
-    @keyframes grow { from { transform:scaleX(0); } }
+    /* masthead: dark band */
+    .mast { background:var(--ink); color:#EAF1F6; }
+    .mast .in { width:min(880px, calc(100% - 40px)); margin:0 auto; padding:40px 0 44px; display:grid; grid-template-columns:1fr auto; gap:24px 40px; align-items:end; }
+    .brand { font-family:var(--display); font-weight:700; font-size:14px; letter-spacing:.06em; color:var(--amber); }
+    h1 { font-family:var(--display); font-weight:800; font-size:clamp(36px, 6.4vw, 60px); line-height:1.05; letter-spacing:-0.015em; margin:10px 0 12px; color:#fff; text-wrap:balance; }
+    .lede { margin:0; font-size:18px; color:#B7C8D6; max-width:36ch; }
+    .lede b { color:#fff; font-weight:600; }
+    .next-box { border:1px solid rgba(255,255,255,.16); border-radius:var(--radius); padding:16px 18px; min-width:260px; max-width:320px; background:rgba(255,255,255,.04); }
+    .next-box .k { display:block; font-family:var(--display); font-size:12px; font-weight:700; letter-spacing:.08em; color:var(--amber); margin-bottom:6px; }
+    .next-box .t { display:block; font-weight:600; color:#fff; line-height:1.4; }
+    .next-box .s { display:block; font-size:14px; color:#B7C8D6; margin-top:4px; }
 
-    /* phases */
-    .phase { margin-top:56px; }
-    .phase-head { display:flex; align-items:baseline; gap:14px; padding-bottom:12px; border-bottom:2px solid var(--ink); }
-    .phase-head h2 { margin:0; font-size:22px; font-weight:900; letter-spacing:-0.01em; color:var(--ink); }
-    .phase-head p { margin:0; color:var(--ink-3); font-size:15px; font-weight:500; }
+    /* track */
+    .wrap { width:min(880px, calc(100% - 40px)); margin:0 auto; padding:40px 0 96px; }
+    .track { list-style:none; margin:0; padding:0; position:relative; }
+    .track::before { content:""; position:absolute; top:12px; bottom:12px; inset-inline-start:19px; width:2px; background:var(--rail); border-radius:2px; }
+    .phase { position:relative; display:grid; grid-template-columns:40px 1fr; gap:0 24px; align-items:center; padding:36px 0 10px; }
+    .phase:first-child { padding-top:4px; }
+    .phase-name { font-family:var(--display); font-weight:800; font-size:24px; letter-spacing:-0.01em; color:var(--ink); line-height:1.2; }
+    .phase::before { content:""; width:40px; height:40px; border-radius:50%; background:var(--sky); position:relative; z-index:1; background-image:radial-gradient(circle, var(--ink) 0 6px, transparent 6.5px); }
 
-    /* units */
-    .units { display:flex; flex-direction:column; }
-    .unit {
-      display:grid; grid-template-columns:56px 1fr auto; align-items:center; gap:0 18px;
-      padding:18px 8px; border-bottom:1px solid var(--line); color:inherit; text-decoration:none;
-      position:relative;
-    }
-    .num { font-size:28px; font-weight:900; letter-spacing:-0.02em; font-variant-numeric:tabular-nums; color:var(--line-strong); line-height:1; }
-    .body { display:flex; flex-direction:column; gap:3px; min-width:0; }
-    .title { font-weight:700; font-size:18px; line-height:1.35; color:var(--ink-2); text-wrap:pretty; }
-    .meta { font-size:14px; color:var(--ink-3); font-weight:500; }
-    .go { font-size:14px; font-weight:700; color:var(--ink-3); white-space:nowrap; }
+    .st { position:relative; display:grid; grid-template-columns:40px 1fr; gap:0 24px; padding:8px 0; align-items:start; }
+    .node { width:40px; height:40px; border-radius:50%; display:grid; place-items:center; background:var(--sky); position:relative; z-index:1; margin-top:14px; }
+    .node::after { content:""; width:14px; height:14px; border-radius:50%; border:2px solid var(--rail); background:var(--sky); }
+    .built .node { background:var(--amber); color:var(--ink); box-shadow:0 0 0 5px var(--sky); }
+    .built .node::after { display:none; }
+    .next .node::after { border-color:var(--ink); background:#fff; box-shadow:0 0 0 4px rgba(15,42,61,.12); animation:ring 2.2s var(--ease) infinite; }
+    @keyframes ring { 0%,100% { box-shadow:0 0 0 4px rgba(15,42,61,.12); } 50% { box-shadow:0 0 0 8px rgba(15,42,61,.06); } }
 
-    .built { margin:6px -8px; border-radius:10px; border-bottom-color:transparent; background:var(--paper); box-shadow:0 0 0 1px var(--line); transition:box-shadow .2s var(--ease-out), background .2s var(--ease-out); }
-    .built .num { color:var(--flask); }
-    .built .title { color:var(--ink); font-size:20px; }
-    .built .go { color:var(--green); display:inline-flex; align-items:center; gap:6px; }
-    .built .arrow { display:inline-block; transition:transform .25s var(--ease-out); }
-    .built:hover { box-shadow:0 0 0 1.5px var(--green); background:var(--green-tint); }
-    .built:hover .arrow { transform:translateX(-4px); }
-    .built:focus-visible { outline:3px solid var(--flask); outline-offset:3px; }
-    .built:active { transform:scale(.995); }
+    .card { display:grid; grid-template-columns:1fr auto; grid-template-areas:"k k" "t btn" "m btn"; gap:2px 20px; align-items:center; padding:16px 20px; border-radius:var(--radius); color:inherit; text-decoration:none; }
+    .k { grid-area:k; font-family:var(--display); font-size:12px; font-weight:700; letter-spacing:.08em; color:var(--ink-3); display:flex; gap:10px; align-items:center; }
+    .t { grid-area:t; font-family:var(--display); font-weight:500; font-size:19px; line-height:1.35; color:var(--ink-2); text-wrap:pretty; }
+    .m { grid-area:m; font-size:15px; color:var(--ink-3); font-weight:600; }
+    .btn { grid-area:btn; font-family:var(--display); font-weight:700; font-size:15px; padding:10px 18px; border-radius:999px; background:var(--ink); color:#fff; white-space:nowrap; transition:transform .2s var(--ease), background .2s var(--ease); }
+    .tag { font-size:11px; padding:2px 8px; border-radius:999px; background:var(--amber-tint); color:var(--amber-deep); letter-spacing:.04em; }
 
-    .todo .title { font-weight:500; }
+    .built .card { background:var(--paper); box-shadow:0 1px 2px rgba(15,42,61,.06), 0 8px 24px -12px rgba(15,42,61,.18); transition:transform .25s var(--ease), box-shadow .25s var(--ease); }
+    .built .k { color:var(--amber-deep); }
+    .built .t { color:var(--ink); font-weight:700; font-size:22px; }
+    .built .card:hover { transform:translateY(-2px); box-shadow:0 2px 4px rgba(15,42,61,.06), 0 16px 32px -12px rgba(15,42,61,.28); }
+    .built .card:hover .btn { background:var(--amber); color:var(--ink); }
+    .built .card:active { transform:scale(.99); }
+    .built .card:focus-visible { outline:3px solid var(--amber); outline-offset:3px; }
+    .todo .card, .next .card { padding-top:12px; padding-bottom:12px; }
+    .next .t { color:var(--ink); font-weight:700; }
 
-    @media (max-width:560px) {
-      .unit { grid-template-columns:44px 1fr; row-gap:6px; }
-      .num { font-size:22px; }
-      .go { grid-column:2; }
-      .built .go { justify-self:start; }
-      .phase-head { flex-direction:column; gap:2px; }
+    @media (max-width:640px) {
+      .mast .in { grid-template-columns:1fr; align-items:start; }
+      .next-box { max-width:none; }
+      .st { grid-template-columns:32px 1fr; gap:0 14px; }
+      .node { width:32px; height:32px; }
+      .track::before { inset-inline-start:15px; }
+      .phase { grid-template-columns:32px 1fr; gap:0 14px; }
+      .phase::before { width:32px; height:32px; }
+      .card { grid-template-areas:"k k" "t t" "m m" "btn btn"; padding:14px 16px; }
+      .btn { justify-self:start; margin-top:8px; }
     }
     @media (prefers-reduced-motion: reduce) {
-      .status .bar i { animation:none; }
-      .built, .built .arrow { transition:none; }
-      .built:hover .arrow { transform:none; }
+      .next .node::after { animation:none; }
+      .built .card, .btn { transition:none; }
+      .built .card:hover { transform:none; }
     }
-    @media print { .built { box-shadow:none; } .go { display:none; } }
+    @media print { .mast { background:none; color:var(--ink); } h1, .next-box .t { color:var(--ink); } .btn { display:none; } }
   </style>
 </head>
 <body>
+  <header class="mast">
+    <div class="in">
+      <div>
+        <div class="brand">מבוא למדעים · כיתה י׳</div>
+        <h1>שאלוני סיכום לפי יחידות</h1>
+        <p class="lede">רוני רובן · תשפ״ז. <b>שאלון אחד מוכן</b> מתוך 16 יחידות בתוכנית.</p>
+      </div>
+      <div class="next-box">
+        <span class="k">הבא בתור</span>
+        <span class="t">השערה ומשתנים</span>
+        <span class="s">יחידה 2 · 2 שעות</span>
+      </div>
+    </div>
+  </header>
   <main class="wrap">
-    <div class="brand"><i></i>מבוא למדעים · כיתה י׳</div>
-    <h1>שאלוני מבוא למדעים</h1>
-    <p class="sub">רוני רובן · תשפ״ז</p>
-    <div class="status" role="status"><span>נבנה שאלון אחד מתוך 16 יחידות</span><div class="bar"><i></i></div></div>
-
-    <section class="phase">
-      <header class="phase-head">
-        <h2>חקר מדעי</h2>
-        <p>שאלה, השערה, ניסוי ונתונים</p>
-      </header>
-      <div class="units">
-      <a class="unit built" href="research-question/">
-        <span class="num">01</span>
-        <span class="body">
-          <span class="title">חקר מדעי: שאלה, השערה, ניסוי, נתונים, מסקנה</span>
-          <span class="meta">20 שאלות · סף מעבר 60 · 2 שעות</span>
-        </span>
-        <span class="go">פתיחת השאלון <span class="arrow" aria-hidden="true">←</span></span>
-      </a>
-      <div class="unit todo">
-        <span class="num">02</span>
-        <span class="body">
-          <span class="title">השערה ומשתנים</span>
-          <span class="meta">2 שעות</span>
-        </span>
-      </div>
-      <div class="unit todo">
-        <span class="num">03</span>
-        <span class="body">
-          <span class="title">תצפית לעומת פרשנות; רישום נתונים, טבלה וגרפים</span>
-          <span class="meta">2 שעות</span>
-        </span>
-      </div>
-      <div class="unit todo">
-        <span class="num">04</span>
-        <span class="body">
-          <span class="title">משמעות המושג &quot;מדעי&quot;: מדע / פסאודו-מדע, ראיות, מקורות</span>
-          <span class="meta">2 שעות</span>
-        </span>
-      </div>
-      <div class="unit todo">
-        <span class="num">05</span>
-        <span class="body">
-          <span class="title">ביצוע ניסוי ואיסוף נתונים</span>
-          <span class="meta">2 שעות</span>
-        </span>
-      </div>
-      </div>
-    </section>
-    <section class="phase">
-      <header class="phase-head">
-        <h2>מיומנויות</h2>
-        <p>חשיבה, יצירה ועבודה משותפת</p>
-      </header>
-      <div class="units">
-      <div class="unit todo">
-        <span class="num">06</span>
-        <span class="body">
-          <span class="title">יצירתיות: זיהוי צורך ורעיונאות (מבעיה לרעיון)</span>
-          <span class="meta">4 שעות</span>
-        </span>
-      </div>
-      <div class="unit todo">
-        <span class="num">07</span>
-        <span class="body">
-          <span class="title">אוריינות טכנולוגית</span>
-          <span class="meta">4 שעות</span>
-        </span>
-      </div>
-      <div class="unit todo">
-        <span class="num">08</span>
-        <span class="body">
-          <span class="title">חשיבה ביקורתית</span>
-          <span class="meta">4 שעות</span>
-        </span>
-      </div>
-      <div class="unit todo">
-        <span class="num">09</span>
-        <span class="body">
-          <span class="title">עבודת צוות</span>
-          <span class="meta">4 שעות</span>
-        </span>
-      </div>
-      <div class="unit todo">
-        <span class="num">10</span>
-        <span class="body">
-          <span class="title">פתרון בעיות</span>
-          <span class="meta">4 שעות</span>
-        </span>
-      </div>
-      <div class="unit todo">
-        <span class="num">11</span>
-        <span class="body">
-          <span class="title">למידה עצמאית</span>
-          <span class="meta">4 שעות</span>
-        </span>
-      </div>
-      </div>
-    </section>
-    <section class="phase">
-      <header class="phase-head">
-        <h2>בינה מלאכותית ופרויקט</h2>
-        <p>מכלים ועד הצגת התוצר</p>
-      </header>
-      <div class="units">
-      <div class="unit todo">
-        <span class="num">12</span>
-        <span class="body">
-          <span class="title">שימוש בבינה מלאכותית: פרומפטים, אימות, אתיקה</span>
-          <span class="meta">2 שעות</span>
-        </span>
-      </div>
-      <div class="unit todo">
-        <span class="num">13</span>
-        <span class="body">
-          <span class="title">וייב קודינג: מרעיון לפתרון עובד (כולל פרויקט מסכם)</span>
-          <span class="meta">8 שעות</span>
-        </span>
-      </div>
-      <div class="unit todo">
-        <span class="num">14</span>
-        <span class="body">
-          <span class="title">בניית יומן הניסוי עם AI</span>
-          <span class="meta">4 שעות</span>
-        </span>
-      </div>
-      <div class="unit todo">
-        <span class="num">15</span>
-        <span class="body">
-          <span class="title">הכנת ההצגה + ביקורת עמיתים</span>
-          <span class="meta">4 שעות</span>
-        </span>
-      </div>
-      <div class="unit todo">
-        <span class="num">16</span>
-        <span class="body">
-          <span class="title">הצגת תוצרים</span>
-          <span class="meta">4 שעות</span>
-        </span>
-      </div>
-      </div>
-    </section>
+    <ol class="track">
+    <li class="phase"><span class="phase-name">חקר מדעי</span></li>
+      <li class="st built">
+        <span class="node"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <a class="card" href="research-question/">
+          <span class="k">יחידה 1</span>
+          <span class="t">חקר מדעי: שאלה, השערה, ניסוי, נתונים, מסקנה</span>
+          <span class="m">20 שאלות · סף מעבר 60 · 2 שעות</span>
+          <span class="btn">לשאלון</span>
+        </a>
+      </li>
+      <li class="st next">
+        <span class="node"></span>
+        <div class="card">
+          <span class="k">יחידה 2 <span class="tag">הבא בתור</span></span>
+          <span class="t">השערה ומשתנים</span>
+          <span class="m">2 שעות</span>
+        </div>
+      </li>
+      <li class="st todo">
+        <span class="node"></span>
+        <div class="card">
+          <span class="k">יחידה 3 </span>
+          <span class="t">תצפית לעומת פרשנות; רישום נתונים, טבלה וגרפים</span>
+          <span class="m">2 שעות</span>
+        </div>
+      </li>
+      <li class="st todo">
+        <span class="node"></span>
+        <div class="card">
+          <span class="k">יחידה 4 </span>
+          <span class="t">משמעות המושג &quot;מדעי&quot;: מדע / פסאודו-מדע, ראיות, מקורות</span>
+          <span class="m">2 שעות</span>
+        </div>
+      </li>
+      <li class="st todo">
+        <span class="node"></span>
+        <div class="card">
+          <span class="k">יחידה 5 </span>
+          <span class="t">ביצוע ניסוי ואיסוף נתונים</span>
+          <span class="m">2 שעות</span>
+        </div>
+      </li>
+    <li class="phase"><span class="phase-name">מיומנויות</span></li>
+      <li class="st todo">
+        <span class="node"></span>
+        <div class="card">
+          <span class="k">יחידה 6 </span>
+          <span class="t">יצירתיות: זיהוי צורך ורעיונאות (מבעיה לרעיון)</span>
+          <span class="m">4 שעות</span>
+        </div>
+      </li>
+      <li class="st todo">
+        <span class="node"></span>
+        <div class="card">
+          <span class="k">יחידה 7 </span>
+          <span class="t">אוריינות טכנולוגית</span>
+          <span class="m">4 שעות</span>
+        </div>
+      </li>
+      <li class="st todo">
+        <span class="node"></span>
+        <div class="card">
+          <span class="k">יחידה 8 </span>
+          <span class="t">חשיבה ביקורתית</span>
+          <span class="m">4 שעות</span>
+        </div>
+      </li>
+      <li class="st todo">
+        <span class="node"></span>
+        <div class="card">
+          <span class="k">יחידה 9 </span>
+          <span class="t">עבודת צוות</span>
+          <span class="m">4 שעות</span>
+        </div>
+      </li>
+      <li class="st todo">
+        <span class="node"></span>
+        <div class="card">
+          <span class="k">יחידה 10 </span>
+          <span class="t">פתרון בעיות</span>
+          <span class="m">4 שעות</span>
+        </div>
+      </li>
+      <li class="st todo">
+        <span class="node"></span>
+        <div class="card">
+          <span class="k">יחידה 11 </span>
+          <span class="t">למידה עצמאית</span>
+          <span class="m">4 שעות</span>
+        </div>
+      </li>
+    <li class="phase"><span class="phase-name">בינה מלאכותית ופרויקט</span></li>
+      <li class="st todo">
+        <span class="node"></span>
+        <div class="card">
+          <span class="k">יחידה 12 </span>
+          <span class="t">שימוש בבינה מלאכותית: פרומפטים, אימות, אתיקה</span>
+          <span class="m">2 שעות</span>
+        </div>
+      </li>
+      <li class="st todo">
+        <span class="node"></span>
+        <div class="card">
+          <span class="k">יחידה 13 </span>
+          <span class="t">וייב קודינג: מרעיון לפתרון עובד (כולל פרויקט מסכם)</span>
+          <span class="m">8 שעות</span>
+        </div>
+      </li>
+      <li class="st todo">
+        <span class="node"></span>
+        <div class="card">
+          <span class="k">יחידה 14 </span>
+          <span class="t">בניית יומן הניסוי עם AI</span>
+          <span class="m">4 שעות</span>
+        </div>
+      </li>
+      <li class="st todo">
+        <span class="node"></span>
+        <div class="card">
+          <span class="k">יחידה 15 </span>
+          <span class="t">הכנת ההצגה + ביקורת עמיתים</span>
+          <span class="m">4 שעות</span>
+        </div>
+      </li>
+      <li class="st todo">
+        <span class="node"></span>
+        <div class="card">
+          <span class="k">יחידה 16 </span>
+          <span class="t">הצגת תוצרים</span>
+          <span class="m">4 שעות</span>
+        </div>
+      </li>
+    </ol>
   </main>
 </body>
 </html>
