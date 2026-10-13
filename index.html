@@ -3,136 +3,232 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#2E7D52">
+  <meta name="theme-color" content="#F7FAF7">
   <title>שאלוני מבוא למדעים</title>
+  <meta name="description" content="שאלוני סיכום לכל יחידות מבוא למדעים, כיתה י׳.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;900&display=swap" rel="stylesheet">
   <style>
-    :root { --ink:#16261D; --lab:#2E7D52; --lab-deep:#1F5B3A; --mist:#EDF5EE; --flask:#E85D2A; --muted:#5B7566; --line:#D3E4D7; }
+    :root {
+      --bg:#F7FAF7; --paper:#FFFFFF; --ink:#15221B; --ink-2:#3D5245; --ink-3:#5E7466;
+      --line:#D9E5DC; --line-strong:#B9CDBF;
+      --green:#2A6F4B; --green-deep:#1D5237; --green-tint:#E7F2EA;
+      --flask:#D9552A; --flask-tint:#FBEDE6;
+      --ease-out:cubic-bezier(0.23,1,0.32,1);
+    }
     * { box-sizing:border-box; }
+    html { background:var(--bg); }
     body {
-      margin:0; color:var(--ink); font-family:Heebo,sans-serif; background-color:#F6FBF7;
-      background-image:
-        radial-gradient(circle at 12% 8%, rgba(46,125,82,.10), transparent 24rem),
-        radial-gradient(circle at 90% 4%, rgba(232,93,42,.09), transparent 26rem);
+      margin:0; color:var(--ink); background:var(--bg);
+      font-family:Heebo, system-ui, sans-serif; font-size:17px; line-height:1.55;
+      -webkit-font-smoothing:antialiased;
     }
-    .wrap { width:min(900px, calc(100% - 32px)); margin:auto; padding:56px 0 64px; }
-    .brand { display:flex; align-items:center; gap:10px; color:var(--lab); font-weight:800; font-size:15px; letter-spacing:.02em; }
-    .brand .dot { width:11px; height:11px; border-radius:50%; background:var(--flask); box-shadow:0 0 0 4px rgba(232,93,42,.16); }
-    h1 { font-size:clamp(34px,7vw,60px); margin:16px 0 10px; color:var(--lab-deep); letter-spacing:-.02em; font-weight:800; }
-    .sub { color:var(--muted); font-weight:600; font-size:17px; line-height:1.7; margin:0 0 10px; }
-    .progress { display:flex; align-items:center; gap:12px; color:var(--muted); font-weight:600; font-size:14px; margin:0 0 30px; }
-    .progress .bar { flex:1; height:8px; border-radius:999px; background:var(--mist); border:1px solid var(--line); overflow:hidden; }
-    .progress .bar i { display:block; height:100%; width:6%; background:var(--lab); border-radius:999px; }
-    .list { display:grid; gap:14px; }
-    .lesson {
-      display:block; padding:20px 24px; color:inherit; text-decoration:none; background:#fff;
-      border:1px solid var(--line); border-radius:18px; position:relative;
+    .wrap { width:min(760px, calc(100% - 32px)); margin:0 auto; padding:48px 0 96px; }
+
+    /* header */
+    .brand { display:flex; align-items:center; gap:10px; font-weight:700; font-size:14px; color:var(--green); }
+    .brand i { width:10px; height:10px; border-radius:50%; background:var(--flask); }
+    h1 {
+      font-size:clamp(38px, 7vw, 64px); line-height:1.08; letter-spacing:-0.02em; font-weight:900;
+      margin:14px 0 10px; color:var(--green-deep); text-wrap:balance;
     }
-    .lesson.built { box-shadow:0 14px 34px rgba(31,91,58,.09); transition:transform .18s, box-shadow .18s, border-color .18s; }
-    .lesson.built:hover { transform:translateY(-3px); border-color:var(--lab); box-shadow:0 20px 44px rgba(31,91,58,.16); }
-    .lesson.built:focus-visible { outline:3px solid var(--flask); outline-offset:3px; }
-    .lesson.built::before { content:""; position:absolute; inset-inline-start:0; top:18px; bottom:18px; width:5px; border-radius:0 6px 6px 0; background:var(--flask); }
-    .lesson.todo { background:rgba(255,255,255,.55); border-style:dashed; color:var(--muted); }
-    .lesson.todo h2 { color:var(--muted); font-weight:700; }
-    .num { color:var(--flask); font-weight:800; font-size:13px; letter-spacing:.04em; }
-    .todo .num { color:var(--muted); }
-    .lesson h2 { margin:6px 0 10px; font-size:22px; color:var(--lab-deep); font-weight:800; line-height:1.35; }
-    .chips { display:flex; flex-wrap:wrap; gap:8px; }
-    .chip { padding:4px 11px; border-radius:999px; background:var(--mist); border:1px solid var(--line); color:var(--lab-deep); font-weight:700; font-size:13px; }
-    .chip.soon { background:transparent; color:var(--muted); border-style:dashed; }
-    @media (prefers-reduced-motion: reduce) { .lesson.built:hover { transform:none; } }
+    .sub { margin:0; color:var(--ink-2); font-weight:500; font-size:18px; }
+    .status { margin:28px 0 0; display:flex; align-items:center; gap:14px; font-size:15px; font-weight:500; color:var(--ink-2); }
+    .status .bar { flex:1; height:4px; background:var(--line); border-radius:2px; overflow:hidden; }
+    .status .bar i { display:block; height:100%; width:6%; background:var(--green); transform-origin:right; animation:grow .6s var(--ease-out) both; }
+    @keyframes grow { from { transform:scaleX(0); } }
+
+    /* phases */
+    .phase { margin-top:56px; }
+    .phase-head { display:flex; align-items:baseline; gap:14px; padding-bottom:12px; border-bottom:2px solid var(--ink); }
+    .phase-head h2 { margin:0; font-size:22px; font-weight:900; letter-spacing:-0.01em; color:var(--ink); }
+    .phase-head p { margin:0; color:var(--ink-3); font-size:15px; font-weight:500; }
+
+    /* units */
+    .units { display:flex; flex-direction:column; }
+    .unit {
+      display:grid; grid-template-columns:56px 1fr auto; align-items:center; gap:0 18px;
+      padding:18px 8px; border-bottom:1px solid var(--line); color:inherit; text-decoration:none;
+      position:relative;
+    }
+    .num { font-size:28px; font-weight:900; letter-spacing:-0.02em; font-variant-numeric:tabular-nums; color:var(--line-strong); line-height:1; }
+    .body { display:flex; flex-direction:column; gap:3px; min-width:0; }
+    .title { font-weight:700; font-size:18px; line-height:1.35; color:var(--ink-2); text-wrap:pretty; }
+    .meta { font-size:14px; color:var(--ink-3); font-weight:500; }
+    .go { font-size:14px; font-weight:700; color:var(--ink-3); white-space:nowrap; }
+
+    .built { margin:6px -8px; border-radius:10px; border-bottom-color:transparent; background:var(--paper); box-shadow:0 0 0 1px var(--line); transition:box-shadow .2s var(--ease-out), background .2s var(--ease-out); }
+    .built .num { color:var(--flask); }
+    .built .title { color:var(--ink); font-size:20px; }
+    .built .go { color:var(--green); display:inline-flex; align-items:center; gap:6px; }
+    .built .arrow { display:inline-block; transition:transform .25s var(--ease-out); }
+    .built:hover { box-shadow:0 0 0 1.5px var(--green); background:var(--green-tint); }
+    .built:hover .arrow { transform:translateX(-4px); }
+    .built:focus-visible { outline:3px solid var(--flask); outline-offset:3px; }
+    .built:active { transform:scale(.995); }
+
+    .todo .title { font-weight:500; }
+
+    @media (max-width:560px) {
+      .unit { grid-template-columns:44px 1fr; row-gap:6px; }
+      .num { font-size:22px; }
+      .go { grid-column:2; }
+      .built .go { justify-self:start; }
+      .phase-head { flex-direction:column; gap:2px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .status .bar i { animation:none; }
+      .built, .built .arrow { transition:none; }
+      .built:hover .arrow { transform:none; }
+    }
+    @media print { .built { box-shadow:none; } .go { display:none; } }
   </style>
 </head>
 <body>
   <main class="wrap">
-    <div class="brand"><span class="dot"></span><span>מבוא למדעים · י׳</span></div>
+    <div class="brand"><i></i>מבוא למדעים · כיתה י׳</div>
     <h1>שאלוני מבוא למדעים</h1>
     <p class="sub">רוני רובן · תשפ״ז</p>
-    <div class="progress"><span>1 מתוך 16 יחידות</span><div class="bar"><i></i></div></div>
-    <div class="list">
-    <a class="lesson built" href="research-question/">
-      <div class="num">יחידה 1</div>
-      <h2>חקר מדעי: שאלה, השערה, ניסוי, נתונים, מסקנה</h2>
-      <div class="chips"><span class="chip">20 שאלות</span><span class="chip">סף מעבר: 60</span><span class="chip">2 שעות</span></div>
-    </a>
-    <div class="lesson todo" aria-disabled="true">
-      <div class="num">יחידה 2</div>
-      <h2>השערה ומשתנים</h2>
-      <div class="chips"><span class="chip">2 שעות</span><span class="chip soon">טרם נבנה</span></div>
-    </div>
-    <div class="lesson todo" aria-disabled="true">
-      <div class="num">יחידה 3</div>
-      <h2>תצפית לעומת פרשנות; רישום נתונים, טבלה וגרפים</h2>
-      <div class="chips"><span class="chip">2 שעות</span><span class="chip soon">טרם נבנה</span></div>
-    </div>
-    <div class="lesson todo" aria-disabled="true">
-      <div class="num">יחידה 4</div>
-      <h2>משמעות המושג &quot;מדעי&quot;: מדע / פסאודו-מדע, ראיות, מקורות</h2>
-      <div class="chips"><span class="chip">2 שעות</span><span class="chip soon">טרם נבנה</span></div>
-    </div>
-    <div class="lesson todo" aria-disabled="true">
-      <div class="num">יחידה 5</div>
-      <h2>ביצוע ניסוי ואיסוף נתונים</h2>
-      <div class="chips"><span class="chip">2 שעות</span><span class="chip soon">טרם נבנה</span></div>
-    </div>
-    <div class="lesson todo" aria-disabled="true">
-      <div class="num">יחידה 6</div>
-      <h2>יצירתיות: זיהוי צורך ורעיונאות (מבעיה לרעיון)</h2>
-      <div class="chips"><span class="chip">4 שעות</span><span class="chip soon">טרם נבנה</span></div>
-    </div>
-    <div class="lesson todo" aria-disabled="true">
-      <div class="num">יחידה 7</div>
-      <h2>אוריינות טכנולוגית</h2>
-      <div class="chips"><span class="chip">4 שעות</span><span class="chip soon">טרם נבנה</span></div>
-    </div>
-    <div class="lesson todo" aria-disabled="true">
-      <div class="num">יחידה 8</div>
-      <h2>חשיבה ביקורתית</h2>
-      <div class="chips"><span class="chip">4 שעות</span><span class="chip soon">טרם נבנה</span></div>
-    </div>
-    <div class="lesson todo" aria-disabled="true">
-      <div class="num">יחידה 9</div>
-      <h2>עבודת צוות</h2>
-      <div class="chips"><span class="chip">4 שעות</span><span class="chip soon">טרם נבנה</span></div>
-    </div>
-    <div class="lesson todo" aria-disabled="true">
-      <div class="num">יחידה 10</div>
-      <h2>פתרון בעיות</h2>
-      <div class="chips"><span class="chip">4 שעות</span><span class="chip soon">טרם נבנה</span></div>
-    </div>
-    <div class="lesson todo" aria-disabled="true">
-      <div class="num">יחידה 11</div>
-      <h2>למידה עצמאית</h2>
-      <div class="chips"><span class="chip">4 שעות</span><span class="chip soon">טרם נבנה</span></div>
-    </div>
-    <div class="lesson todo" aria-disabled="true">
-      <div class="num">יחידה 12</div>
-      <h2>שימוש בבינה מלאכותית: פרומפטים, אימות, אתיקה</h2>
-      <div class="chips"><span class="chip">2 שעות</span><span class="chip soon">טרם נבנה</span></div>
-    </div>
-    <div class="lesson todo" aria-disabled="true">
-      <div class="num">יחידה 13</div>
-      <h2>וייב קודינג: מרעיון לפתרון עובד (כולל פרויקט מסכם)</h2>
-      <div class="chips"><span class="chip">8 שעות</span><span class="chip soon">טרם נבנה</span></div>
-    </div>
-    <div class="lesson todo" aria-disabled="true">
-      <div class="num">יחידה 14</div>
-      <h2>בניית יומן הניסוי עם AI</h2>
-      <div class="chips"><span class="chip">4 שעות</span><span class="chip soon">טרם נבנה</span></div>
-    </div>
-    <div class="lesson todo" aria-disabled="true">
-      <div class="num">יחידה 15</div>
-      <h2>הכנת ההצגה + ביקורת עמיתים</h2>
-      <div class="chips"><span class="chip">4 שעות</span><span class="chip soon">טרם נבנה</span></div>
-    </div>
-    <div class="lesson todo" aria-disabled="true">
-      <div class="num">יחידה 16</div>
-      <h2>הצגת תוצרים</h2>
-      <div class="chips"><span class="chip">4 שעות</span><span class="chip soon">טרם נבנה</span></div>
-    </div>
-    </div>
+    <div class="status" role="status"><span>נבנה שאלון אחד מתוך 16 יחידות</span><div class="bar"><i></i></div></div>
+
+    <section class="phase">
+      <header class="phase-head">
+        <h2>חקר מדעי</h2>
+        <p>שאלה, השערה, ניסוי ונתונים</p>
+      </header>
+      <div class="units">
+      <a class="unit built" href="research-question/">
+        <span class="num">01</span>
+        <span class="body">
+          <span class="title">חקר מדעי: שאלה, השערה, ניסוי, נתונים, מסקנה</span>
+          <span class="meta">20 שאלות · סף מעבר 60 · 2 שעות</span>
+        </span>
+        <span class="go">פתיחת השאלון <span class="arrow" aria-hidden="true">←</span></span>
+      </a>
+      <div class="unit todo">
+        <span class="num">02</span>
+        <span class="body">
+          <span class="title">השערה ומשתנים</span>
+          <span class="meta">2 שעות</span>
+        </span>
+      </div>
+      <div class="unit todo">
+        <span class="num">03</span>
+        <span class="body">
+          <span class="title">תצפית לעומת פרשנות; רישום נתונים, טבלה וגרפים</span>
+          <span class="meta">2 שעות</span>
+        </span>
+      </div>
+      <div class="unit todo">
+        <span class="num">04</span>
+        <span class="body">
+          <span class="title">משמעות המושג &quot;מדעי&quot;: מדע / פסאודו-מדע, ראיות, מקורות</span>
+          <span class="meta">2 שעות</span>
+        </span>
+      </div>
+      <div class="unit todo">
+        <span class="num">05</span>
+        <span class="body">
+          <span class="title">ביצוע ניסוי ואיסוף נתונים</span>
+          <span class="meta">2 שעות</span>
+        </span>
+      </div>
+      </div>
+    </section>
+    <section class="phase">
+      <header class="phase-head">
+        <h2>מיומנויות</h2>
+        <p>חשיבה, יצירה ועבודה משותפת</p>
+      </header>
+      <div class="units">
+      <div class="unit todo">
+        <span class="num">06</span>
+        <span class="body">
+          <span class="title">יצירתיות: זיהוי צורך ורעיונאות (מבעיה לרעיון)</span>
+          <span class="meta">4 שעות</span>
+        </span>
+      </div>
+      <div class="unit todo">
+        <span class="num">07</span>
+        <span class="body">
+          <span class="title">אוריינות טכנולוגית</span>
+          <span class="meta">4 שעות</span>
+        </span>
+      </div>
+      <div class="unit todo">
+        <span class="num">08</span>
+        <span class="body">
+          <span class="title">חשיבה ביקורתית</span>
+          <span class="meta">4 שעות</span>
+        </span>
+      </div>
+      <div class="unit todo">
+        <span class="num">09</span>
+        <span class="body">
+          <span class="title">עבודת צוות</span>
+          <span class="meta">4 שעות</span>
+        </span>
+      </div>
+      <div class="unit todo">
+        <span class="num">10</span>
+        <span class="body">
+          <span class="title">פתרון בעיות</span>
+          <span class="meta">4 שעות</span>
+        </span>
+      </div>
+      <div class="unit todo">
+        <span class="num">11</span>
+        <span class="body">
+          <span class="title">למידה עצמאית</span>
+          <span class="meta">4 שעות</span>
+        </span>
+      </div>
+      </div>
+    </section>
+    <section class="phase">
+      <header class="phase-head">
+        <h2>בינה מלאכותית ופרויקט</h2>
+        <p>מכלים ועד הצגת התוצר</p>
+      </header>
+      <div class="units">
+      <div class="unit todo">
+        <span class="num">12</span>
+        <span class="body">
+          <span class="title">שימוש בבינה מלאכותית: פרומפטים, אימות, אתיקה</span>
+          <span class="meta">2 שעות</span>
+        </span>
+      </div>
+      <div class="unit todo">
+        <span class="num">13</span>
+        <span class="body">
+          <span class="title">וייב קודינג: מרעיון לפתרון עובד (כולל פרויקט מסכם)</span>
+          <span class="meta">8 שעות</span>
+        </span>
+      </div>
+      <div class="unit todo">
+        <span class="num">14</span>
+        <span class="body">
+          <span class="title">בניית יומן הניסוי עם AI</span>
+          <span class="meta">4 שעות</span>
+        </span>
+      </div>
+      <div class="unit todo">
+        <span class="num">15</span>
+        <span class="body">
+          <span class="title">הכנת ההצגה + ביקורת עמיתים</span>
+          <span class="meta">4 שעות</span>
+        </span>
+      </div>
+      <div class="unit todo">
+        <span class="num">16</span>
+        <span class="body">
+          <span class="title">הצגת תוצרים</span>
+          <span class="meta">4 שעות</span>
+        </span>
+      </div>
+      </div>
+    </section>
   </main>
 </body>
 </html>
